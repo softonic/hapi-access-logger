@@ -16,7 +16,7 @@
     "pretest": "npm run lint",
     "test": "npm run jest",
     "tdd": "npm run jest -- --watch",
-    "jest": "jest es",
+    "jest": "jest --testPathPattern es/**/*",
     "prebuild": "npm run test",
     "build": "rm -rf lib && babel es -d lib --source-maps",
     "prerelease": "npm run build",
