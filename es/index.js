@@ -37,10 +37,20 @@ const HapiAccessLogs = {
    * @param  {hapi.Server}  server
    * @param  {Object}       options
    * @param  {Logger}       options.logger
+   * @param  {string[]}     [options.whitelistRequestHeaders]
+   * @param  {string[]}     [options.blacklistRequestHeaders]
+   * @param  {string[]}     [options.whitelistResponseHeaders]
+   * @param  {string[]}     [options.blacklistResponseHeaders]
    * @param  {Function}     notifyRegistration
    */
   register(server, options, notifyRegistration) {
-    const { logger, whitelistHeaders, blacklistHeaders } = options;
+    const {
+      logger,
+      whitelistRequestHeaders,
+      blacklistRequestHeaders,
+      whitelistResponseHeaders,
+      blacklistResponseHeaders,
+    } = options;
 
     server.on('response', (request) => {
       const { req, res } = request.raw;
@@ -60,15 +70,15 @@ const HapiAccessLogs = {
       const loggableRequest = formatRequest(extendedReq);
       loggableRequest.headers = filterHeaders({
         headers: loggableRequest.headers,
-        whitelistHeaders,
-        blacklistHeaders,
+        whitelistHeaders: whitelistRequestHeaders,
+        blacklistHeaders: blacklistRequestHeaders,
       });
 
       const loggableResponse = formatResponse(extendedRes);
       loggableResponse.headers = filterHeaders({
         headers: loggableResponse.headers,
-        whitelistHeaders,
-        blacklistHeaders,
+        whitelistHeaders: whitelistResponseHeaders,
+        blacklistHeaders: blacklistResponseHeaders,
       });
 
       logger.info({

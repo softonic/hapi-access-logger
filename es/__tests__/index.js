@@ -66,10 +66,12 @@ describe('HapiAccessLogs', () => {
       };
       const { server } = createServerWithPlugin({
         logger,
-        whitelistHeaders: [
+        whitelistRequestHeaders: [
           'host',
           'accept',
           'accept-language',
+        ],
+        whitelistResponseHeaders: [
           'content-type',
           'content-language',
         ],
@@ -113,9 +115,11 @@ describe('HapiAccessLogs', () => {
       };
       const { server } = createServerWithPlugin({
         logger,
-        blacklistHeaders: [
+        blacklistRequestHeaders: [
           'accept',
           'accept-language',
+        ],
+        blacklistResponseHeaders: [
           'content-type',
           'content-language',
         ],
