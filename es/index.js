@@ -16,6 +16,21 @@ function filterHeaders({ headers, whitelistHeaders, blacklistHeaders }) {
 }
 
 /**
+ * Returns a string with some information from the given request
+ * E.g.: 'GET example.com/test'
+ * @param  {http.ClientRequest} request
+ * @return {string}
+ */
+function makeRequestLine(request) {
+  /* eslint-disable no-underscore-dangle */
+  const headers = request.headers || request._headers || {};
+  /* eslint-enable no-underscore-dangle */
+  const host = headers.host || '';
+  const url = request.url || request.path;
+  return `${request.method} ${host}${url}`;
+}
+
+/**
  * Hapi plugin to log finished requests and responses
  *
  * @example
@@ -81,10 +96,12 @@ const HapiAccessLogs = {
         blacklistHeaders: blacklistResponseHeaders,
       });
 
+      const requestLine = makeRequestLine(loggableRequest);
+
       logger.info({
         request: loggableRequest,
         response: loggableResponse,
-      });
+      }, `${requestLine} ${loggableResponse.statusCode}`);
     });
 
     notifyRegistration();

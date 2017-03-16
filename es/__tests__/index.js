@@ -38,6 +38,7 @@ describe('HapiAccessLogs', () => {
         method: 'GET',
         url: '/',
         headers: {
+          host: 'example.com',
           'x-foo': 'bar',
         },
       });
@@ -57,7 +58,7 @@ describe('HapiAccessLogs', () => {
             'x-bar': 'baz',
           }),
         }),
-      });
+      }, 'GET example.com/ 200');
     });
 
     it('should whitelist the specified headers', async () => {
@@ -106,7 +107,7 @@ describe('HapiAccessLogs', () => {
             'content-language': 'es-ES',
           },
         }),
-      });
+      }, 'GET example.com/ 200');
     });
 
     it('should blacklist the specified headers', async () => {
@@ -152,7 +153,7 @@ describe('HapiAccessLogs', () => {
             'x-bar': 'baz',
           }),
         }),
-      });
+      }, 'GET example.com/ 200');
 
       const logEntry = logger.info.mock.calls[0][0];
 
