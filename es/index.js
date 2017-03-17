@@ -1,19 +1,10 @@
-import { formatRequest, formatResponse } from '@softonic/http-log-format';
-import { pick, omit } from 'lodash';
+import {
+  formatRequest,
+  formatResponse,
+  stringifyRequest,
+  stringifyResponse,
+} from '@softonic/http-log-format';
 import packageJSON from '../package.json';
-
-/**
- * Filters the given headers object picking the given whitelisted headers (if any) and removing
- * all blacklisted ones
- * @param  {Object.<string, string>} options.headers
- * @param  {string[]} [options.whitelistHeaders]
- * @param  {string[]} [options.blacklistHeaders]
- * @return {Object.<string, string>}
- */
-function filterHeaders({ headers, whitelistHeaders, blacklistHeaders }) {
-  const whitelistedHeaders = whitelistHeaders ? pick(headers, whitelistHeaders) : headers;
-  return omit(whitelistedHeaders, blacklistHeaders);
-}
 
 /**
  * Hapi plugin to log finished requests and responses
@@ -24,7 +15,11 @@ function filterHeaders({ headers, whitelistHeaders, blacklistHeaders }) {
  * server.register({
  *   register: HapiAccessLogs,
  *   options: {
- *     logger: bunyan.createLogger({ name: 'access-log' })
+ *     logger: bunyan.createLogger({ name: 'access-log' }),
+ *     whitelistRequestHeaders: [],
+ *     blacklistRequestHeaders: [],
+ *     whitelistResponseHeaders: [],
+ *     blacklistResponseHeaders: []
  *   }
  * }, (error) => {});
  *
@@ -67,24 +62,22 @@ const HapiAccessLogs = {
         responseTime: sentTime - receivedTime,
       });
 
-      const loggableRequest = formatRequest(extendedReq);
-      loggableRequest.headers = filterHeaders({
-        headers: loggableRequest.headers,
+      const loggableRequest = formatRequest(extendedReq, {
         whitelistHeaders: whitelistRequestHeaders,
         blacklistHeaders: blacklistRequestHeaders,
       });
 
-      const loggableResponse = formatResponse(extendedRes);
-      loggableResponse.headers = filterHeaders({
-        headers: loggableResponse.headers,
+      const loggableResponse = formatResponse(extendedRes, {
         whitelistHeaders: whitelistResponseHeaders,
         blacklistHeaders: blacklistResponseHeaders,
       });
 
+      const message = `${stringifyRequest(loggableRequest)} ${stringifyResponse(loggableResponse)}`;
+
       logger.info({
         request: loggableRequest,
         response: loggableResponse,
-      });
+      }, message);
     });
 
     notifyRegistration();

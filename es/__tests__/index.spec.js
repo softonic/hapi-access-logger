@@ -10,7 +10,7 @@ function createServerWithPlugin(options) {
   });
   server.route({
     method: 'GET',
-    path: '/',
+    path: '/path',
     handler: (request, reply) => (
       reply('Hola mundo')
         .header('x-bar', 'baz')
@@ -36,8 +36,9 @@ describe('HapiAccessLogs', () => {
 
       await server.inject({
         method: 'GET',
-        url: '/',
+        url: '/path',
         headers: {
+          host: 'example.com',
           'x-foo': 'bar',
         },
       });
@@ -45,7 +46,7 @@ describe('HapiAccessLogs', () => {
       expect(logger.info).toHaveBeenCalledWith({
         request: expect.objectContaining({
           method: 'GET',
-          url: '/',
+          url: '/path',
           headers: expect.objectContaining({
             'x-foo': 'bar',
           }),
@@ -57,7 +58,7 @@ describe('HapiAccessLogs', () => {
             'x-bar': 'baz',
           }),
         }),
-      });
+      }, 'GET example.com/path 200 (OK)');
     });
 
     it('should whitelist the specified headers', async () => {
@@ -79,7 +80,7 @@ describe('HapiAccessLogs', () => {
 
       await server.inject({
         method: 'GET',
-        url: '/',
+        url: '/path',
         headers: {
           'x-foo': 'bar',
           host: 'example.com',
@@ -91,7 +92,7 @@ describe('HapiAccessLogs', () => {
       expect(logger.info).toHaveBeenCalledWith({
         request: expect.objectContaining({
           method: 'GET',
-          url: '/',
+          url: '/path',
           headers: {
             host: 'example.com',
             accept: 'text/plain',
@@ -106,7 +107,7 @@ describe('HapiAccessLogs', () => {
             'content-language': 'es-ES',
           },
         }),
-      });
+      }, expect.any(String));
     });
 
     it('should blacklist the specified headers', async () => {
@@ -127,7 +128,7 @@ describe('HapiAccessLogs', () => {
 
       await server.inject({
         method: 'GET',
-        url: '/',
+        url: '/path',
         headers: {
           'x-foo': 'bar',
           host: 'example.com',
@@ -139,7 +140,7 @@ describe('HapiAccessLogs', () => {
       expect(logger.info).toHaveBeenCalledWith({
         request: expect.objectContaining({
           method: 'GET',
-          url: '/',
+          url: '/path',
           headers: expect.objectContaining({
             'x-foo': 'bar',
             host: 'example.com',
@@ -152,7 +153,7 @@ describe('HapiAccessLogs', () => {
             'x-bar': 'baz',
           }),
         }),
-      });
+      }, expect.any(String));
 
       const logEntry = logger.info.mock.calls[0][0];
 
