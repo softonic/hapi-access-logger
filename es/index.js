@@ -13,7 +13,7 @@ import packageJSON from '../package.json';
  *
  * // Registration
  * server.register({
- *   register: HapiAccessLogs,
+ *   register: HapiAccessLogger,
  *   options: {
  *     logger: bunyan.createLogger({ name: 'access-log' }),
  *     whitelistRequestHeaders: [],
@@ -25,7 +25,7 @@ import packageJSON from '../package.json';
  *
  * @type {Object}
  */
-const HapiAccessLogs = {
+const HapiAccessLogger = {
 
   /**
    * Registers the plugin in the Hapi server
@@ -85,8 +85,8 @@ const HapiAccessLogs = {
 
 };
 
-HapiAccessLogs.register.attributes = {
+HapiAccessLogger.register.attributes = {
   pkg: packageJSON,
 };
 
-export default HapiAccessLogs;
+export default HapiAccessLogger;
