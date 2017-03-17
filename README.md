@@ -22,8 +22,10 @@ server.register({
   options: {
     logger: bunyan.createLogger({ name: "myapp" }),
     // whitelistHeaders and blacklistHeaders should not be used together
-    whitelistHeaders: [ 'host', 'accept', 'content-type'  ],
-    blacklistHeaders: [ 'authorization' ],
+    whitelistRequestHeaders: [ 'host', 'accept', 'content-type'  ],
+    blacklistRequestHeaders: [ 'authorization' ],
+    whitelistResponseHeaders: [ 'content-type' ],
+    blacklistResponseHeaders: [ 'set-cookie' ],
   }
 });
 ```
