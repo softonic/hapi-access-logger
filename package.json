@@ -58,6 +58,7 @@
     "testPathIgnorePatterns": [
       "<rootDir>/lib/",
       "<rootDir>/node_modules/"
-    ]
+    ],
+    "testRegex": "/__tests__/.*\\.spec\\.jsx?$"
   }
 }
