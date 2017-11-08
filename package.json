@@ -35,15 +35,15 @@
     "@softonic/http-log-format": "^1.1.2"
   },
   "devDependencies": {
-    "babel-cli": "^6.24.0",
-    "babel-preset-latest": "^6.24.0",
-    "babel-register": "^6.24.0",
-    "eslint": "^3.17.1",
-    "eslint-config-airbnb-base": "^11.1.1",
-    "eslint-plugin-import": "^2.2.0",
-    "eslint-plugin-jest": "^19.0.1",
-    "hapi": "^16.1.0",
-    "jest": "^19.0.2"
+    "babel-cli": "^6.26.0",
+    "babel-preset-latest": "^6.24.1",
+    "babel-register": "^6.26.0",
+    "eslint": "^4.10.0",
+    "eslint-config-airbnb-base": "^12.1.0",
+    "eslint-plugin-import": "^2.8.0",
+    "eslint-plugin-jest": "^21.2.0",
+    "hapi": "^17.0.1",
+    "jest": "^21.2.1"
   },
   "repository": {
     "type": "git",
