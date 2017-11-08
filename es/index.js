@@ -4,6 +4,7 @@ import {
   stringifyRequest,
   stringifyResponse,
 } from '@softonic/http-log-format';
+
 import packageJSON from '../package.json';
 
 /**
@@ -12,8 +13,8 @@ import packageJSON from '../package.json';
  * @example
  *
  * // Registration
- * server.register({
- *   register: HapiAccessLogger,
+ * await server.register({
+ *   plugin: HapiAccessLogger,
  *   options: {
  *     logger: bunyan.createLogger({ name: 'access-log' }),
  *     whitelistRequestHeaders: [],
@@ -21,11 +22,12 @@ import packageJSON from '../package.json';
  *     whitelistResponseHeaders: [],
  *     blacklistResponseHeaders: []
  *   }
- * }, (error) => {});
+ * });
  *
  * @type {Object}
  */
 const HapiAccessLogger = {
+  pkg: packageJSON,
 
   /**
    * Registers the plugin in the Hapi server
@@ -36,9 +38,8 @@ const HapiAccessLogger = {
    * @param  {string[]}     [options.blacklistRequestHeaders]
    * @param  {string[]}     [options.whitelistResponseHeaders]
    * @param  {string[]}     [options.blacklistResponseHeaders]
-   * @param  {Function}     notifyRegistration
    */
-  register(server, options, notifyRegistration) {
+  async register(server, options) {
     const {
       logger,
       whitelistRequestHeaders,
@@ -47,7 +48,7 @@ const HapiAccessLogger = {
       blacklistResponseHeaders,
     } = options;
 
-    server.on('response', (request) => {
+    server.events.on('response', (request) => {
       const { req, res } = request.raw;
 
       const receivedTime = new Date(request.info.received);
@@ -79,14 +80,7 @@ const HapiAccessLogger = {
         response: loggableResponse,
       }, message);
     });
-
-    notifyRegistration();
   },
-
-};
-
-HapiAccessLogger.register.attributes = {
-  pkg: packageJSON,
 };
 
 export default HapiAccessLogger;
