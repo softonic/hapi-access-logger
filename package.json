@@ -22,7 +22,7 @@
   "scripts": {
     "lint": "eslint es/**/*.js",
     "pretest": "npm run lint",
-    "test": "jest",
+    "test": "jest --forceExit",
     "tdd": "jest --watch",
     "prebuild": "npm run test",
     "build": "rm -rf lib && babel es -d lib --source-maps",
@@ -60,11 +60,14 @@
   },
   "babel": {
     "presets": [
-      "env", {
-        "targets": {
-          "node": "8.9.0"
+      [
+        "env",
+        {
+          "targets": {
+            "node": "8.9.0"
+          }
         }
-      }
+      ]
     ]
   },
   "jest": {
