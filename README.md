@@ -17,8 +17,8 @@ npm install @softonic/hapi-access-logger
 // ES2015
 import HapiAccessLogger from '@softonic/hapi-access-logger';
 
-server.register({
-  register: HapiAccessLogger,
+await server.register({
+  plugin: HapiAccessLogger,
   options: {
     logger: bunyan.createLogger({ name: "myapp" }),
     // whitelistHeaders and blacklistHeaders should not be used together

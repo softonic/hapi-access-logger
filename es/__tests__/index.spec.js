@@ -1,30 +1,34 @@
 import hapi from 'hapi';
 import HapiAccessLogs from '../index';
 
-function createServerWithPlugin(options) {
+async function createServerWithPlugin(options) {
   const server = new hapi.Server();
-  server.connection();
-  server.register({
-    register: HapiAccessLogs,
+
+  await server.register({
+    plugin: HapiAccessLogs,
     options,
   });
+
   server.route({
     method: 'GET',
     path: '/path',
-    handler: (request, reply) => (
-      reply('Hola mundo')
+    handler: async (request, h) => (
+      h.response('Hola mundo')
         .header('x-bar', 'baz')
         .header('content-type', 'text/plain; charset=utf-8')
         .header('content-language', 'es-ES')
     ),
   });
+
+  await server.start();
+
   return { server };
 }
 
 describe('HapiAccessLogs', () => {
   it('should be a Hapi plugin', () => {
     expect(HapiAccessLogs.register).toBeInstanceOf(Function);
-    expect(HapiAccessLogs.register.attributes.pkg.name).toBe('@softonic/hapi-access-logger');
+    expect(HapiAccessLogs.pkg.name).toBe('@softonic/hapi-access-logger');
   });
 
   describe('when it is registered', () => {
@@ -32,7 +36,7 @@ describe('HapiAccessLogs', () => {
       const logger = {
         info: jest.fn(),
       };
-      const { server } = createServerWithPlugin({ logger });
+      const { server } = await createServerWithPlugin({ logger });
 
       await server.inject({
         method: 'GET',
@@ -65,7 +69,7 @@ describe('HapiAccessLogs', () => {
       const logger = {
         info: jest.fn(),
       };
-      const { server } = createServerWithPlugin({
+      const { server } = await createServerWithPlugin({
         logger,
         whitelistRequestHeaders: [
           'host',
@@ -114,7 +118,7 @@ describe('HapiAccessLogs', () => {
       const logger = {
         info: jest.fn(),
       };
-      const { server } = createServerWithPlugin({
+      const { server } = await createServerWithPlugin({
         logger,
         blacklistRequestHeaders: [
           'accept',
