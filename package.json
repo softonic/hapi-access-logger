@@ -60,7 +60,11 @@
   },
   "babel": {
     "presets": [
-      "env"
+      "env", {
+        "targets": {
+          "node": "8.9.0"
+        }
+      }
     ]
   },
   "jest": {
