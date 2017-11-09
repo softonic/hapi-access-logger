@@ -22,7 +22,7 @@
   "scripts": {
     "lint": "eslint es/**/*.js",
     "pretest": "npm run lint",
-    "test": "jest",
+    "test": "jest --forceExit",
     "tdd": "jest --watch",
     "prebuild": "npm run test",
     "build": "rm -rf lib && babel es -d lib --source-maps",
@@ -31,12 +31,18 @@
     "postrelease": "npm run push && npm publish",
     "push": "git push origin master && git push origin --tags"
   },
+  "engines": {
+    "node": ">=8.9.0"
+  },
+  "peerDependencies": {
+    "hapi": "17.x.x"
+  },
   "dependencies": {
     "@softonic/http-log-format": "^1.1.2"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
-    "babel-preset-latest": "^6.24.1",
+    "babel-preset-env": "^1.6.1",
     "babel-register": "^6.26.0",
     "eslint": "^4.10.0",
     "eslint-config-airbnb-base": "^12.1.0",
@@ -54,7 +60,14 @@
   },
   "babel": {
     "presets": [
-      "latest"
+      [
+        "env",
+        {
+          "targets": {
+            "node": "8.9.0"
+          }
+        }
+      ]
     ]
   },
   "jest": {
