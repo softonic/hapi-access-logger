@@ -1,6 +1,6 @@
 # @softonic/hapi-access-logger
 
-Hapi plugin to log requests and responses
+Hapi plugin to log finished requests and responses
 
 ## Installation
 
