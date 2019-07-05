@@ -38,6 +38,7 @@ const HapiAccessLogger = {
    * @param  {string[]}     [options.blacklistRequestHeaders]
    * @param  {string[]}     [options.whitelistResponseHeaders]
    * @param  {string[]}     [options.blacklistResponseHeaders]
+   * @param  {Function}     [options.isLoggableRequest=()=> true]
    */
   async register(server, options) {
     const {
@@ -46,9 +47,14 @@ const HapiAccessLogger = {
       blacklistRequestHeaders,
       whitelistResponseHeaders,
       blacklistResponseHeaders,
+      isLoggableRequest = ()=> true,
     } = options;
 
     server.events.on('response', (request) => {
+      if (!isLoggableRequest(request)) {
+        return;
+      }
+
       const { req, res } = request.raw;
 
       const receivedTime = new Date(request.info.received);
