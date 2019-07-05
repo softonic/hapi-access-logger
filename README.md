@@ -1,6 +1,6 @@
 # @softonic/hapi-access-logger
 
-Hapi plugin to log all requests and responses
+Hapi plugin to log requests and responses
 
 ## Installation
 
@@ -11,10 +11,6 @@ npm install @softonic/hapi-access-logger
 ## Usage
 
 ```js
-// CommonJS
-// const HapiAccessLogger = require('@softonic/hapi-access-logger');
-
-// ES2015
 import HapiAccessLogger from '@softonic/hapi-access-logger';
 
 await server.register({
@@ -26,7 +22,8 @@ await server.register({
     blacklistRequestHeaders: [ 'authorization' ],
     whitelistResponseHeaders: [ 'content-type' ],
     blacklistResponseHeaders: [ 'set-cookie' ],
-  }
+    isLoggableRequest: request => get(request, 'route.settings.tags', []).includes('page')
+  },
 });
 ```
 
@@ -40,9 +37,9 @@ npm test
 
 ## Contribute
 
-1. Fork it: `git clone https://github.com/softonic/@softonic/hapi-access-logger.git`
+1. Fork it: `git clone https://github.com/softonic/hapi-access-logger.git`
 2. Create your feature branch: `git checkout -b feature/my-new-feature`
 3. Commit your changes: `git commit -am 'Added some feature'`
 4. Check the build: `npm run build`
-4. Push to the branch: `git push origin my-new-feature`
-5. Submit a pull request :D
+5. Push to the branch: `git push origin my-new-feature`
+6. Submit a pull request :D
