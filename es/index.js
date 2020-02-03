@@ -47,7 +47,7 @@ const HapiAccessLogger = {
       blacklistRequestHeaders,
       whitelistResponseHeaders,
       blacklistResponseHeaders,
-      isLoggableRequest = ()=> true,
+      isLoggableRequest = () => true,
     } = options;
 
     server.events.on('response', (request) => {
@@ -60,14 +60,16 @@ const HapiAccessLogger = {
       const receivedTime = new Date(request.info.received);
       const sentTime = new Date();
 
-      const extendedReq = Object.assign({}, req, {
+      const extendedReq = {
+        ...req,
         timestamp: receivedTime.toISOString(),
-      });
+      };
 
-      const extendedRes = Object.assign({}, res, {
+      const extendedRes = {
+        ...res,
         timestamp: sentTime.toISOString(),
         responseTime: sentTime - receivedTime,
-      });
+      };
 
       const loggableRequest = formatRequest(extendedReq, {
         whitelistHeaders: whitelistRequestHeaders,
