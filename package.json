@@ -32,24 +32,25 @@
     "push": "git push origin master && git push origin --tags"
   },
   "engines": {
-    "node": ">=8.9.0"
+    "node": ">=12.14.1"
   },
   "peerDependencies": {
-    "hapi": "17.x.x"
+    "@hapi/hapi": "19.x.x"
   },
   "dependencies": {
-    "@softonic/http-log-format": "^1.1.2"
+    "@softonic/http-log-format": "^2.0.0"
   },
   "devDependencies": {
-    "babel-cli": "^6.26.0",
-    "babel-preset-env": "^1.6.1",
-    "babel-register": "^6.26.0",
-    "eslint": "^4.10.0",
-    "eslint-config-airbnb-base": "^12.1.0",
-    "eslint-plugin-import": "^2.8.0",
-    "eslint-plugin-jest": "^21.2.0",
-    "hapi": "^17.0.1",
-    "jest": "^21.2.1"
+    "@babel/cli": "^7.8.4",
+    "@babel/preset-env": "^7.8.4",
+    "@babel/register": "^7.8.3",
+    "@hapi/hapi": "^19.0.5",
+    "babel-eslint": "^10.0.3",
+    "eslint": "^6.8.0",
+    "eslint-config-airbnb-base": "^14.0.0",
+    "eslint-plugin-import": "^2.20.1",
+    "eslint-plugin-jest": "^23.6.0",
+    "jest": "^25.1.0"
   },
   "repository": {
     "type": "git",
@@ -61,11 +62,12 @@
   "babel": {
     "presets": [
       [
-        "env",
+        "@babel/preset-env",
         {
           "targets": {
-            "node": "8.9.0"
-          }
+            "node": "current"
+          },
+          "useBuiltIns": "usage"
         }
       ]
     ]
