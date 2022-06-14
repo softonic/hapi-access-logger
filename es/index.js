@@ -62,6 +62,7 @@ const HapiAccessLogger = {
 
       const extendedReq = {
         ...req,
+        headers: req.headers,
         timestamp: receivedTime.toISOString(),
       };
 
